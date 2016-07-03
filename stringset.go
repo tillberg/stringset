@@ -15,8 +15,12 @@ func New(elements ...string) *StringSet {
 func (s *StringSet) Len() int {
 	return len(s.strMap)
 }
-func (s *StringSet) Add(str string) {
+func (s *StringSet) Add(str string) bool {
+	if _, exists := s.strMap[str]; exists {
+		return false
+	}
 	s.strMap[str] = true
+	return true
 }
 func (s *StringSet) Remove(str string) {
 	delete(s.strMap, str)
@@ -34,4 +38,7 @@ func (s *StringSet) All() []string {
 }
 func (s *StringSet) Clear() {
 	s.strMap = make(map[string]bool)
+}
+func (s *StringSet) Raw() map[string]bool {
+	return s.strMap
 }
