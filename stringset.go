@@ -42,3 +42,14 @@ func (s *StringSet) Clear() {
 func (s *StringSet) Raw() map[string]bool {
 	return s.strMap
 }
+func (s *StringSet) Equal(other *StringSet) bool {
+	if len(s.strMap) != len(other.strMap) {
+		return false
+	}
+	for k := range s.strMap {
+		if !other.strMap[k] {
+			return false
+		}
+	}
+	return true
+}
