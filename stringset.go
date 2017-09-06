@@ -1,7 +1,7 @@
 package stringset
 
 type StringSet struct {
-	strMap map[string]bool
+	strMap map[string]struct{}
 }
 
 func New(elements ...string) *StringSet {
@@ -19,7 +19,7 @@ func (s *StringSet) Add(str string) bool {
 	if _, exists := s.strMap[str]; exists {
 		return false
 	}
-	s.strMap[str] = true
+	s.strMap[str] = struct{}{}
 	return true
 }
 func (s *StringSet) Remove(str string) {
@@ -37,9 +37,9 @@ func (s *StringSet) All() []string {
 	return l
 }
 func (s *StringSet) Clear() {
-	s.strMap = make(map[string]bool)
+	s.strMap = make(map[string]struct{})
 }
-func (s *StringSet) Raw() map[string]bool {
+func (s *StringSet) Raw() map[string]struct{} {
 	return s.strMap
 }
 func (s *StringSet) Equal(other *StringSet) bool {
@@ -47,7 +47,7 @@ func (s *StringSet) Equal(other *StringSet) bool {
 		return false
 	}
 	for k := range s.strMap {
-		if !other.strMap[k] {
+		if _, exists := other.strMap[k]; !exists {
 			return false
 		}
 	}
