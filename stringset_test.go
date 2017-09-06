@@ -36,7 +36,35 @@ func TestEquals(t *testing.T) {
 	a, b := makeSets(N, true)
 	assert.Equal(t, a.Len(), N, "makeSets error")
 	assert.Equal(t, b.Len(), N, "makeSets error")
-	assert.True(t, a.Equal(b))
+	assert.True(t, a.Equal(b), "sets with same elements should be equal")
+	assert.True(t, b.Equal(a), "sets with same elements should be equal")
+	assert.True(t, a.Equal(a), "set should be equal with itself")
+
+	x, y := New(), New()
+	assert.True(t, x.Equal(y), "two empty sets should be equal")
+	x.Add("1")
+	assert.False(t, x.Equal(y))
+	assert.False(t, y.Equal(x))
+	y.Add("1")
+	assert.True(t, x.Equal(y))
+	assert.True(t, y.Equal(x))
+}
+
+func TestUnequal(t *testing.T) {
+	N := 1000
+	a, b := makeSets(N, false)
+	assert.Equal(t, a.Len(), N, "makeSets error")
+	assert.Equal(t, b.Len(), N, "makeSets error")
+	assert.False(t, a.Equal(b), "error checking equality of different sets")
+
+	c, d := makeSets(N*2, true)
+	assert.Equal(t, c.Len(), N*2, "makeSets error")
+	assert.Equal(t, d.Len(), N*2, "makeSets error")
+	assert.True(t, c.Equal(d), "error checking equality of identical sets")
+	assert.False(t, a.Equal(c), "differing sets returned equal")
+	assert.False(t, a.Equal(d), "differing sets returned equal")
+	assert.False(t, b.Equal(c), "differing sets returned equal")
+	assert.False(t, b.Equal(d), "differing sets returned equal")
 }
 
 var benchSz = 10000
