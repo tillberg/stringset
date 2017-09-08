@@ -53,3 +53,37 @@ func (s *StringSet) Equal(other *StringSet) bool {
 	}
 	return true
 }
+
+func (s *StringSet) Difference(other *StringSet) *StringSet {
+	diff := &StringSet{}
+	diff.Clear()
+	for k := range s.strMap {
+		if _, exists := other.strMap[k]; !exists {
+			diff.Add(k)
+		}
+	}
+	return diff
+}
+
+func (s *StringSet) Intersection(other *StringSet) *StringSet {
+	inter := &StringSet{}
+	inter.Clear()
+	for k := range s.strMap {
+		if _, exists := other.strMap[k]; exists {
+			inter.Add(k)
+		}
+	}
+	return inter
+}
+
+func (s *StringSet) Union(other *StringSet) *StringSet {
+	union := &StringSet{}
+	union.Clear()
+	for k := range s.strMap {
+		union.Add(k)
+	}
+	for k := range other.strMap {
+		union.Add(k)
+	}
+	return union
+}
