@@ -67,6 +67,67 @@ func TestUnequal(t *testing.T) {
 	assert.False(t, b.Equal(d), "differing sets returned equal")
 }
 
+func TestDifference(t *testing.T) {
+	a := &StringSet{}
+	b := &StringSet{}
+	a.Clear()
+	b.Clear()
+
+	a.Add("a")
+	a.Add("b")
+	a.Add("c")
+
+	b.Add("b")
+	b.Add("c")
+	b.Add("d")
+
+	c := a.Difference(b)
+	assert.Equal(t, 1, c.Len())
+	assert.True(t, c.Has("a"))
+}
+
+func TestUnion(t *testing.T) {
+	a := &StringSet{}
+	b := &StringSet{}
+	a.Clear()
+	b.Clear()
+
+	a.Add("a")
+	a.Add("b")
+	a.Add("c")
+
+	b.Add("b")
+	b.Add("c")
+	b.Add("d")
+
+	c := a.Union(b)
+	assert.Equal(t, 4, c.Len())
+	assert.True(t, c.Has("a"))
+	assert.True(t, c.Has("b"))
+	assert.True(t, c.Has("c"))
+	assert.True(t, c.Has("d"))
+}
+
+func TestIntersection(t *testing.T) {
+	a := &StringSet{}
+	b := &StringSet{}
+	a.Clear()
+	b.Clear()
+
+	a.Add("a")
+	a.Add("b")
+	a.Add("c")
+
+	b.Add("b")
+	b.Add("c")
+	b.Add("d")
+
+	c := a.Intersection(b)
+	assert.Equal(t, 2, c.Len())
+	assert.True(t, c.Has("b"))
+	assert.True(t, c.Has("c"))
+}
+
 var benchSz = 10000
 
 func BenchmarkEqualMaps(b *testing.B) {
