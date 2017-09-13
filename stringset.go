@@ -22,8 +22,12 @@ func (s *StringSet) Add(str string) bool {
 	s.strMap[str] = struct{}{}
 	return true
 }
-func (s *StringSet) Remove(str string) {
+func (s *StringSet) Remove(str string) bool {
+	if _, exists := s.strMap[str]; !exists {
+		return false
+	}
 	delete(s.strMap, str)
+	return true
 }
 func (s *StringSet) Has(str string) bool {
 	_, has := s.strMap[str]
