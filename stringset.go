@@ -1,5 +1,14 @@
 package stringset
 
+import (
+	"errors"
+	"sort"
+)
+
+var (
+	ErrSetIsEmpty = errors.New("set is empty")
+)
+
 type StringSet struct {
 	strMap map[string]struct{}
 }
@@ -40,6 +49,11 @@ func (s *StringSet) All() []string {
 	}
 	return l
 }
+func (s *StringSet) AllSorted() []string {
+	all := s.All()
+	sort.Strings(all)
+	return all
+}
 func (s *StringSet) Clear() {
 	s.strMap = make(map[string]struct{})
 }
@@ -56,6 +70,13 @@ func (s *StringSet) Equal(other *StringSet) bool {
 		}
 	}
 	return true
+}
+func (s *StringSet) Pop() (string, error) {
+	for k := range s.strMap {
+		delete(s.strMap, k)
+		return k, nil
+	}
+	return "", ErrSetIsEmpty
 }
 
 func (s *StringSet) Difference(other *StringSet) *StringSet {
